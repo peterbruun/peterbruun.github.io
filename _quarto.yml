@@ -11,6 +11,7 @@ website:
       - publications.qmd
       - cv.qmd
       - mymusic.qmd
+      - poems.qmd
 
 format:
   html:

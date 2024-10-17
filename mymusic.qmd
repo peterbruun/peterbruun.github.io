@@ -1,24 +1,24 @@
 ---
 layout: mymusic
-title: My music
+title: Music
 ---
 
 Some songs I have made in the past
 
-# Her Står Jeg Alene - Ørentvist
+## Her Står Jeg Alene - Ørentvist
 My university band was called Ørentvist.  
 
 {{< video https://www.youtube.com/watch?v=hRNSQPa1e1I 
     title="Her Står Jeg Alene"
     aspect-ratio="16x9" >}}
 
-# When You Know - Who Said Light
+## When You Know - Who Said Light
 My high school band was called Who Said Light. 
 We made a few songs, and this is one of them.  
 
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/40902019&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/who-said-light" title="Who Said Light" target="_blank" style="color: #cccccc; text-decoration: none;">Who Said Light</a> · <a href="https://soundcloud.com/who-said-light/when-you-know" title="When You Know" target="_blank" style="color: #cccccc; text-decoration: none;">When You Know</a></div>
 
-# You're Not Gonna Lose It
-My solo project during high-school.  
+## You're Not Gonna Lose It
+My solo project during high-school. This song features my sister on the vocals.
 
 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/34687749&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/peter-bruun" title="Peter Bruun" target="_blank" style="color: #cccccc; text-decoration: none;">Peter Bruun</a> · <a href="https://soundcloud.com/peter-bruun/youre-not-gonna-lose-it" title="You&#x27;re Not Gonna Lose It" target="_blank" style="color: #cccccc; text-decoration: none;">You&#x27;re Not Gonna Lose It</a></div>
