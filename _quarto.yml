@@ -3,15 +3,17 @@ project:
   output-dir: docs
 
 website:
-  title: "peterbruun.github.io"
+  title: "Peter Bruun-Rasmussen"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - publications.qmd
+      - cv.qmd
 
 format:
   html:
-    theme: cosmo
+    theme: minty
     css: styles.css
     toc: true
+    page-layout: full

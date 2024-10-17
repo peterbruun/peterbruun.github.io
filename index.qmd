@@ -1,7 +1,21 @@
 ---
-title: "peterbruun.github.io"
+title: "Peter Bruun-Rasmussen, MSc., PhD"
+image: media/profil_billede.jpg
+toc: false
+about: 
+  template: jolla
+  image-shape: round
+  image-width: 17em
+  links:
+    - text: LinkedIn
+      href: https://dk.linkedin.com/in/peter-bruun-rasmussen
+    - text: GitHub
+      href: https://github.com/peterbruun
+    - text: Email
+      href: mailto:peter@bruun-rasmussen.info
+    - text: Google Scholar
+      href: https://scholar.google.com/citations?user=QepyB-wAAAAJ&hl=en&oi=ao
 ---
 
-This is a Quarto website.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Passionate about increasing healthcare industrys adoption of causal inference methods to help provide more effective, personalized, and evidence-based treatments for patients.
