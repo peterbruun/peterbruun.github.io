@@ -13,8 +13,12 @@ about:
       href: https://github.com/peterbruun
     - text: Email
       href: mailto:peter@bruun-rasmussen.info
+    - text: Twitter
+      href: https://x.com/PeterBruunRasm1
     - text: Google Scholar
       href: https://scholar.google.com/citations?user=QepyB-wAAAAJ&hl=en&oi=ao
+
+
 ---
 
 
