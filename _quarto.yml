@@ -10,6 +10,7 @@ website:
         text: Home
       - publications.qmd
       - cv.qmd
+      - mymusic.qmd
 
 format:
   html:
