@@ -1,5 +1,5 @@
 ---
-title: "Peter Bruun-Rasmussen, MSc, PhD"
+title: "Peter Bruun-Rasmussen MSc, PhD"
 #image: media/peterbo_test3.png
 image: media/petebo_final.jpg
 toc: false
