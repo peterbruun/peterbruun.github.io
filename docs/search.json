@@ -74,7 +74,21 @@
     "href": "index.html",
     "title": "Peter Bruun-Rasmussen, MSc, PhD",
     "section": "",
-    "text": "Passionate about increasing the healthcare industrys adoption of causal inference methods to help provide more effective, personalized, and evidence-based treatments for patients."
+    "text": "Passionate about increasing the healthcare industrys adoption of causal inference and target trial emulation methods to help bring more effective, personalized, and evidence-based treatments to patients."
+  },
+  {
+    "objectID": "index.html#experience",
+    "href": "index.html#experience",
+    "title": "Peter Bruun-Rasmussen, MSc, PhD",
+    "section": "Experience",
+    "text": "Experience\n\nNovo Nordisk | Senior Data Scientist | May 2023 - present\nCapital Region Hospital of Denmark | Postdoc | Dec 2022 - April 2023\nResearcher | Harvard Medical School | Sept 2019 - Feb 2020"
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Peter Bruun-Rasmussen, MSc, PhD",
+    "section": "Education",
+    "text": "Education\n\nPhD in Biostatistics and Bioinformatics\n“A Causal Inference Approach to Red Blood Cell Transfusion Research” University of Copenhagen | Denmark | Dec 2018 - Nov 2022\nMSc and BS in Biomedical Engineering\nTechnical University of Denmark | Denmark | Sept 2012 - Nov 2018"
   },
   {
     "objectID": "publications.html",
@@ -89,26 +103,5 @@
     "title": "Publications",
     "section": "",
     "text": "Bruun-Rasmussen P, Kragh Andersen P, Banasik K, Brunak S, Johansson PI. Intervening on the storage time of RBC units and its effects on adverse recipient outcomes using real-world data. Blood. 2022 Jun 23;139(25):3647-3654. doi: https://doi.org/10.1182/blood.2022015892. PMID: 35482965; PMCID: PMC9227103.\nBruun-Rasmussen P, Andersen PK, Banasik K, Brunak S, Johansson PI. Estimating the effect of donor sex on red blood cell transfused patient mortality: A retrospective cohort study using a targeted learning and emulated trials-based approach. EClinicalMedicine. 2022 Aug 27;51:101628. doi: https://doi.org/10.1016/j.eclinm.2022.101628. PMID: 36176312; PMCID: PMC9513555.\nBruun-Rasmussen P, Hanefeld Dziegiel M, Banasik K, Johansson PI, Brunak S. Associations of ABO and Rhesus D blood groups with phenome-wide disease incidence: A 41-year retrospective cohort study of 482,914 patients. Elife. 2023 Mar 9;12:e83116. doi: https://doi.org/10.7554/eLife.83116. PMID: 36892462; PMCID: PMC10042530.\nBurgdorf KS, Trabjerg BB, Pedersen MG, Nissen J, Banasik K, Pedersen OB, Sørensen E, Nielsen KR, Larsen MH, Erikstrup C, Bruun-Rasmussen P, Westergaard D, Thørner LW, Hjalgrim H, Paarup HM, Brunak S, Pedersen CB, Torrey EF, Werge T, Mortensen PB, Yolken RH, Ullum H. Large-scale study of Toxoplasma and Cytomegalovirus shows an association between infection and serious psychiatric disorders. Brain Behav Immun. 2019 Jul;79:152-158. doi: https://doi.org/10.1016/j.bbi.2019.01.026. Epub 2019 Jan 29. PMID: 30685531.\nNissen J, Trabjerg B, Pedersen MG, Banasik K, Pedersen OB, Sørensen E, Nielsen KR, Erikstrup C, Petersen MS, Paarup HM, Bruun-Rasmussen P, Westergaard D, Hansen TF, Pedersen CB, Werge T, Torrey F, Hjalgrim H, Mortensen PB, Yolken R, Brunak S, Ullum H, Burgdorf KS. Herpes Simplex Virus Type 1 infection is associated with suicidal behavior and first registered psychiatric diagnosis in a healthy population. Psychoneuroendocrinology. 2019 Oct;108:150-154. doi: https://doi.org/10.1016/j.psyneuen.2019.06.015. Epub 2019 Jun 28. PMID: 31284079.\nHe S, Lei P, Kang W, Cheung P, Xu T, Mana M, Park CY, Wang H, Imada S, Russell JO, Wang J, Wang R, Zhou Z, Chetal K, Stas E, Mohad V, Bruun-Rasmussen P, Sadreyev RI, Hodin RA, Zhang Y, Breault DT, Camargo FD, Yilmaz ÖH, Fredberg JJ, Saeidi N. Stiffness Restricts the Stemness of the Intestinal Stem Cells and Skews Their Differentiation Toward Goblet Cells. Gastroenterology. 2023 Jun;164(7):1137-1151.e15. doi: https://doi.org/10.1053/j.gastro.2023.02.030. Epub 2023 Mar 4. PMID: 36871599; PMCID: PMC10200762."
-  },
-  {
-    "objectID": "index.html#education",
-    "href": "index.html#education",
-    "title": "Peter Bruun-Rasmussen, MSc, PhD",
-    "section": "Education",
-    "text": "Education\n\nPhD in Biostatistics and Bioinformatics\nUniversity of Copenhagen | Denmark | Dec 2018 - Nov 2022\nMSc and BS in Biomedical Engineering\nTechnical University of Denmark | Denmark | Sept 2012 - Nov 2018"
-  },
-  {
-    "objectID": "index.html#experience",
-    "href": "index.html#experience",
-    "title": "Peter Bruun-Rasmussen, MSc, PhD",
-    "section": "Experience",
-    "text": "Experience\n\nNovo Nordisk | Senior Data Scientist | May 2023 - present\nCapital Region Hospital of Denmark | Postdoc | Dec 2022 - April 2023\nResearcher | Harvard Medical School | Sept 2019 - Feb 2020"
-  },
-  {
-    "objectID": "index.html#section",
-    "href": "index.html#section",
-    "title": "Peter Bruun-Rasmussen, MSc, PhD",
-    "section": "-",
-    "text": "-"
   }
 ]

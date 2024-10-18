@@ -27,7 +27,7 @@ about:
 ---
 #  
 
-Passionate about increasing the healthcare industrys adoption of causal inference methods to help provide more effective, personalized, and evidence-based treatments for patients.
+Passionate about increasing the healthcare industrys adoption of **causal inference** and **target trial emulation** methods to help bring more effective, personalized, and evidence-based treatments to patients.
 
 #     
 
@@ -42,7 +42,8 @@ Passionate about increasing the healthcare industrys adoption of causal inferenc
 
 ## Education
 
-* PhD in Biostatistics and Bioinformatics  
+* PhD in Biostatistics and Bioinformatics   
+"A Causal Inference Approach to Red Blood Cell Transfusion Research"
 University of Copenhagen | Denmark | Dec 2018 - Nov 2022  
 
 
