@@ -1,25 +1,52 @@
 ---
-title: "Peter Bruun-Rasmussen, MSc., PhD"
-image: media/profil_billede.jpg
+title: "Peter Bruun-Rasmussen, MSc, PhD"
+#image: media/peterbo_test3.png
+image: media/petebo_final.jpg
 toc: false
 about: 
-  template: jolla
-  image-shape: round
-  image-width: 17em
+  template: trestles
+  #image-shape: round
+  #image-width: 17em # 17em
   links:
-    - text: LinkedIn
+    - icon: linkedin 
+      text: LinkedIn
       href: https://dk.linkedin.com/in/peter-bruun-rasmussen
-    - text: GitHub
+    - icon: github
+      text: GitHub
       href: https://github.com/peterbruun
-    - text: Email
-      href: mailto:peter@bruun-rasmussen.info
-    - text: Twitter
+    - icon: twitter
+      text: Twitter
       href: https://x.com/PeterBruunRasm1
-    - text: Google Scholar
+    - icon: google 
+      text: Google Scholar
       href: https://scholar.google.com/citations?user=QepyB-wAAAAJ&hl=en&oi=ao
-
+    - icon: mailbox
+      text: Email
+      href: mailto:peter@bruun-rasmussen.info
 
 ---
-
+#  
 
 Passionate about increasing the healthcare industrys adoption of causal inference methods to help provide more effective, personalized, and evidence-based treatments for patients.
+
+#     
+
+## Experience
+
+* Novo Nordisk | Senior Data Scientist | May 2023 - present
+
+* Capital Region Hospital of Denmark | Postdoc | Dec 2022 - April 2023
+
+* Researcher | Harvard Medical School | Sept 2019 - Feb 2020
+
+
+## Education
+
+* PhD in Biostatistics and Bioinformatics  
+University of Copenhagen | Denmark | Dec 2018 - Nov 2022  
+
+
+* MSc and BS in Biomedical Engineering  
+Technical University of Denmark | Denmark | Sept 2012 - Nov 2018 
+
+
