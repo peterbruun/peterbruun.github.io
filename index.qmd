@@ -7,23 +7,6 @@ about:
   template: trestles
   #image-shape: round
   #image-width: 17em # 17em
-  links:
-    - icon: linkedin 
-      text: LinkedIn
-      href: https://dk.linkedin.com/in/peter-bruun-rasmussen
-    - icon: github
-      text: GitHub
-      href: https://github.com/peterbruun
-    - icon: twitter
-      text: Twitter
-      href: https://x.com/PeterBruunRasm1
-    - icon: google 
-      text: Google Scholar
-      href: https://scholar.google.com/citations?user=QepyB-wAAAAJ&hl=en&oi=ao
-    - icon: mailbox
-      text: Email
-      href: mailto:peter@bruun-rasmussen.info
-
 ---
 #  
 
