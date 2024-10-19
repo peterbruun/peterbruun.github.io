@@ -15,7 +15,7 @@ about:
 ---
 #  
 
-Passionate about increasing the healthcare industrys adoption of **causal inference** and **target trial emulation** methods to help bring more effective, personalized, and evidence-based treatments to patients.
+Passionate about increasing the healthcare industrys adoption of **causal inference**, **target trial emulation**, and **targeted learning** methods to help bring more effective, personalized, and evidence-based treatments to patients.
 
 #     
 
