@@ -22,6 +22,7 @@ Passionate about increasing the healthcare industrys adoption of **causal infere
 ## Experience
 
 * Novo Nordisk | Senior Data Scientist | May 2023 - present
+- Team Targeted Learning & Causal Inference
 
 * Capital Region Hospital of Denmark | Postdoc | Dec 2022 - April 2023
 
