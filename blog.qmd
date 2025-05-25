@@ -7,4 +7,4 @@ listing:
   categories: true
 ---
 
-Here I post on target trial emulation, causal inference and targeted learning related topics.
+Here I post on target trial emulation, causal inference, and targeted learning related topics.

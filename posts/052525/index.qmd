@@ -1,0 +1,8 @@
+---
+title: "Targeted Learning as a Better Alternative to Cloning Censoring Weighting"
+description: "Code to demonstrate how targeted learning is much more efficient than cloning censoring weighting"
+author: "Peter Bruun-Rasmussen"
+date: "05/25/2025"
+draft: True
+---
+
