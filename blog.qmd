@@ -1,0 +1,10 @@
+---
+title: "Blog"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+---
+
+Here I post on target trial emulation, causal inference and targeted learning related topics.
