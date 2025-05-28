@@ -74,7 +74,7 @@
     "href": "index.html",
     "title": "Peter Bruun-Rasmussen MSc, PhD",
     "section": "",
-    "text": "Passionate about increasing the healthcare industrys adoption of causal inference, target trial emulation, and targeted learning methods to help bring more effective, personalized, and evidence-based treatments to patients."
+    "text": "I specialize in applied target trial emulation, causal inference, and targeted learning — rigorous methods for generating reliable evidence from real-world data. I work with research institutes and pharmaceutical companies to help integrate these approaches into research and development, ultimately supporting faster evidence generation and more evidence-based treatment strategies.\nIn addition to collaborative projects, I offer practical workshops in applied target trial emulation, designed to equip researchers, data scientists, and epidemiologists with the tools to apply causal inference methods in real-world settings.\nInterested in learning more or bringing a workshop to your team? Feel free to reach out—I’d be happy to connect."
   },
   {
     "objectID": "index.html#experience",
@@ -109,6 +109,6 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "Here I post on target trial emulation, causal inference, and targeted learning related topics.\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Here I post on target trial emulation, causal inference, and targeted learning related topics.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTargeted Learning as a Better Alternative to Cloning Censoring Weighting\n\n\nCode to demonstrate how targeted learning is much more efficient than cloning censoring weighting\n\n\n\n\n\nMay 25, 2025\n\n\nPeter Bruun-Rasmussen\n\n\n\n\n\nNo matching items"
   }
 ]
