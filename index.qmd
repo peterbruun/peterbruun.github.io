@@ -12,35 +12,43 @@ about:
       href: https://scholar.google.com/citations?user=QepyB-wAAAAJ&hl=en&oi=ao
       
 ---
-#  
 
 ##### Target Trial Emulation for Pharmaceutical and Research Innovation
 
-I specialize in applied **target trial emulation**, **causal inference**, and **targeted learning** — rigorous methods for generating reliable evidence from real-world data. I work with research institutes and pharmaceutical companies to help integrate these approaches into research and development, ultimately supporting faster evidence generation and more evidence-based treatment strategies.
+I specialize in applied **target trial emulation**, **causal inference**, and **targeted learning** — novel methods for generating regulatory-grade evidence from real-world data. I work with research institutes and pharmaceutical companies to help integrate these approaches into research and development, ultimately supporting faster evidence generation, label expansion, safety surveliance, and more evidence-based treatment strategies.
 
-In addition to collaborative projects, **I offer practical workshops** in applied target trial emulation, designed to equip researchers, data scientists, and epidemiologists with the tools to apply causal inference methods in real-world settings.
+In addition to consulting, **I offer practical workshops** in applied target trial emulation, designed to equip researchers, data scientists, and epidemiologists with the tools to apply causal inference methods in real-world settings.
 
-**Interested in learning more or bringing a workshop to your team?** Feel free to reach out—I'd be happy to [connect](https://dk.linkedin.com/in/peter-bruun-rasmussen).
+**Interested in learning more or bringing a workshop to your team?** Feel free to reach out — I'd be happy to [connect](https://dk.linkedin.com/in/peter-bruun-rasmussen).
 
-#     
+# 
 
 ## Experience
 
-* Novo Nordisk | Targeted Learning & Causal Inference | Senior Data Scientist | May 2023 - present
-
-* Capital Region Hospital of Denmark | Postdoc | Dec 2022 - April 2023
-
-* Researcher | Harvard Medical School | Sept 2019 - Feb 2020
+<table>
+  <tr>
+    <td><img src="media/novo2.png" width="180" height="90" class="center"/></td>
+    <td style="vertical-align: middle"> - Novo Nordisk | Targeted Learning & Causal Inference | <br> Senior Data Scientist | May 2023 - present</td>
+  </tr>
+    <td><img src="media/rigshospitalet.png" width="170" height="50"/></td>
+    <td style="vertical-align: middle"> - Capital Region Hospital of Denmark | <br> Postdoc |  Dec 2022 - April 2023</td>
+  </tr>
+    <td><img src="media/Harvard-Emblem.png" width="180" height="90"/></td>
+    <td style="vertical-align: middle"> - Researcher | Harvard Medical School | <br> Sept 2019 - Feb 2020</td>
+  </tr>
+</table>
 
 
 ## Education
 
-* PhD in Biostatistics and Bioinformatics   
-"A Causal Inference Approach to Red Blood Cell Transfusion Research"
-University of Copenhagen | Denmark | Dec 2018 - Nov 2022  
-
-
-* MSc and BS in Biomedical Engineering  
-Technical University of Denmark | Denmark | Sept 2012 - Nov 2018 
-
-
+<table>
+  <tr>
+    <td><img src="media/ku.png" width="180" height="90" class="center"/></td>
+    <td style="vertical-align: middle"> - PhD in Biostatistics and Bioinformatics <br> "A Causal Inference Approach to Red Blood Cell Transfusion Research" <br>
+    University of Copenhagen - Denmark <br> Dec 2018 - Nov 2022 </td>
+  </tr>
+    <td><img src="media/DTU-3.jpg" width="180" height="170" class="center"/></td>
+    <td style="vertical-align: middle"> - MSc and BS in Biomedical Engineering  <br> 
+    Technical University of Denmark <br> Sept 2012 - Nov 2018 </td>
+  </tr>
+</table>
