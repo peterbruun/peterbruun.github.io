@@ -1,0 +1,678 @@
+---
+title: Targeted Learning as an Alternative to Cloning-Censoring Weighting
+author: 
+  - name: Peter Bruun-Rasmussen (PBRZ)
+    affiliations: Targeted Learning & Causal Inference
+title-block-banner: "#001965"
+format:
+  html:
+    toc: true
+    toc-location: left
+    self-contained: true
+---
+*This report is not to be shared without agreement with the author.*  
+
+Date: 2024-12-05  
+
+**Collaborators:** Volker Schnecke (VLSN), Britt Wang Jensen (BTWJ), 
+Alex Mourer (OAXM), and Nils Skajaa (NXCS)
+
+
+In this tutorial I demonstrate how targeted learning can 
+(conveniently) be used as an alternative to cloning-censoring weighting.
+Using targeted learning further gives the benefits of double robustness and
+the possibility to use data-adaptive methods (machine learning), thus minimizing
+the potential for model misspecification bias. These properties are not given 
+intrinsically using cloning-censoring weighting. Further, the data wrangling
+required before analysis is much simpler using the proposed targeted learning
+approach as compared with cloning-censoring weighting.  
+
+Here, targeted learning is utilized through the lmtp package [1], and the 
+in-house polle package build by Andreas Nordland (OANO)[2]. 
+
+An advantage of the polle-package compared to other available packages 
+(lmtp/tmle) is that it is also developed to answer questions of subgroup effects
+ and to identify optimal treatment policies.
+ 
+[1] https://www.tandfonline.com/doi/full/10.1080/01621459.2021.1955691  
+[2] https://arxiv.org/abs/2212.02335 
+
+
+```{r, output = FALSE}
+set.seed(8)
+
+# Development version of lmtp
+if (!require("lmtp")) devtools::install_github("nt-williams/lmtp@devel")
+
+# Development version of polle
+if (!require("polle")) devtools::install_github("AndreasNordland/polle")
+
+# Pacman used to install and load all packages
+if (!require("pacman")) install.packages("pacman")
+# Load packages
+pacman::p_load(
+    "lmtp", 
+    "data.table", 
+    "ggplot2", 
+    "knitr",
+    "polle")
+
+```
+
+
+# Data Example from Paper by Miguel Hernan
+
+In the paper: "How to estimate the effect of treatment duration on survival 
+outcomes using observational data", Miguel Hernan demonstrates how 
+cloning-censoring weighting can be used to estimate the true effect of 
+treatment duration on survival outcomes.[1] In his example, 1 or 2 years of 
+Aspirin treatment has no effect on all-cause mortality. 
+ 
+Miguel demonstrates that a naive analysis would show an effect even though
+there is non, while cloning-censoring weighting will avoid this bias. 
+In the example there is no confounding or censoring. 
+
+Here I use the exact same dataset for demonstrative purposes to show that a
+targeted learning approach also estimates the true effect of treatment
+(no effect).  
+
+You can compare the dataset below with the dataset in the paper to see that
+they are the same.  
+
+[1] https://www.bmj.com/content/360/bmj.k182.long  
+
+```{r}
+
+dt1 <- data.table(
+  Person = seq(1, 12, 1),
+  durA = c(rep(0, 4), rep(1, 4), rep(2, 4)),
+  Aspirin1 = c(rep("No", 4), rep("Yes", 8)),
+  Dead1 = c(rep("No", 3), "Yes", rep("No", 3), "Yes", rep("No", 3), "Yes"),
+  Aspirin2 = c(rep("No", 3), "-", rep("No", 3), "-", rep("Yes", 3), "-"),
+  Dead2 = c("No", rep("Yes", 3), "No", rep("Yes", 3), "No", rep("Yes", 3))
+)
+
+kable(dt1)
+
+```
+## Naive and Biased Analysis
+
+### Probability of death for patients actually taking aspirin for 2 years
+
+9, 10, ands 11 survived to the second year and are on aspirin at start of 
+second year.
+
+```{r}
+dt1[Aspirin2 == "Yes"]
+deaths_aspirin2 <- 2/3
+round(deaths_aspirin2,2)
+```
+
+### Probability of death for patients **not** taking aspirin
+The patients who did not receive aspirin in the data are 1, 2, 3, and 4.
+
+```{r}
+dt1[Aspirin1 == "No" & Aspirin2 %in% c("No","-")]
+deaths_no_aspirin <- 3/4
+round(deaths_no_aspirin,2)
+```
+
+### Naive treatment effect of 2 years Aspirin vs no aspirin
+
+```{r}
+round(deaths_aspirin2 / deaths_no_aspirin, 2)
+```
+
+The relative risk difference is less than 1 even though there is no effect.  
+
+From the paper: "This is not surprising: the average survival is longer in 
+people who received two years of treatment because they
+were alive for at least two years. By definition, people
+receiving treatment were “immortal” during those two
+years, which is why the bias of this naive analysis is
+referred to as **immortal time bias**."
+
+## Format Dataset for Analysis using Targeted Learning
+
+I replace "Yes" and "No" with 1 and 0, respectively.  
+Further, I code missing values as NA instead of "-".  
+One can chose to adjust for censoring and confounding as well using 
+targeted learning, however in this example for simplicity there is non.
+
+
+```{r}
+
+dt1 <- data.table(
+  Person = seq(1, 12, 1),
+  durA = c(rep(0, 4), rep(1, 4), rep(2, 4)),
+  Aspirin1 = c(rep(0, 4), rep(1, 8)),
+  Dead1 = c(rep(0, 3), 1, rep(0, 3), 1, rep(0, 3), 1),
+  Aspirin2 = c(rep(0, 3), NA, rep(0, 3), NA, rep(1, 3), NA),
+  Dead2 = c(0, rep(1, 3), 0, rep(1, 3), 0, rep(1, 3))
+)
+
+# If censoring indicators are needed (here they are not)
+#dt1[, Censoring1 := 1]
+#dt1[, Censoring2 := ifelse(Dead1 == 1, NA, 1)]
+# Order
+#dt1 <- dt1[, 
+#  .(Person, durA, Aspirin1, Censoring1, Dead1, Aspirin2, Censoring2, Dead2)]
+
+# Show data.table
+kable(dt1)
+
+```
+
+## Replicate the Dataset 100 times for Power
+
+```{r}
+# Replicate the data set 100 times
+dt <- replicate(100, dt1, simplify = FALSE)
+
+# Stack all replicates on top of each other
+dt <- rbindlist(dt)
+
+# Assign new person ID
+dt[, id := seq(1, dim(dt)[1], 1)]
+
+# Set random baseline confounder with no confounding
+# This is required for the lmtp software to run
+#dt[, W1 := rbinom(n = nrow(dt), size = 1, prob = 0.5)]
+dt[, W1 := 0]
+
+# data.frame is required by lmtp package
+dt <- as.data.frame((dt))
+
+```
+
+
+# Dynamic Treatment Regimes and Targeted Learning
+
+## Define Treatment Strategies
+
+We estimate the effect of 2-year survival comparing 3 treatment strategies:  
+
+1) No aspirin treatment  
+2) 1-year of treatment with aspirin
+2) 2-years of treatment with aspirin
+
+To obtain this comparison analytically we define the treatment indicators 
+as follows:  
+
+Treatment strategy 1 can be defined as a constant 0.  
+Treatment strategy 2 can be defined as 1 in the first year, and 0 in year 2.  
+Treatment strategy 3 as a constant 1.  
+
+
+```{r}
+
+# Never treat
+d0 <- function(data, trt) {
+  rep(0, nrow(data))
+}
+
+# Treat 1-year and then stop treatment
+d_1yr <- function(data, trt) {
+  if (trt == "Aspirin1") return(rep(1, nrow(data)))
+  if (trt == "Aspirin2") return(rep(0, nrow(data)))
+}
+
+# Treat for 2-years (always treat)
+d_2yrs <- function(data, trt) {
+  rep(1, nrow(data))
+}
+
+```
+
+## Define Outcome and Treatment Variables
+
+```{r}
+
+A <- c("Aspirin1", "Aspirin2")
+Y <- c("Dead1", "Dead2")
+C <- c("Censoring1", "Censoring2") # No censoring in this example
+W <- c("W1")
+
+```
+
+## Comparative Effectiveness between Treatment Strategies
+
+## Estimate Survival
+
+No treatment, 1 year of treatment, and 2 years of treatment.
+
+```{r, warning=FALSE, output = FALSE}
+
+no_treat <- lmtp_survival(
+  data = dt, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W,
+  #cens = C,
+  shift = d0, # No treatment
+  folds = 1, 
+  estimator = "lmtp_sdr",  
+  learners_trt = "SL.glm", 
+  learners_outcome = "SL.glm",
+  k = Inf
+)
+
+treat_1yr <- lmtp_survival(
+  data = dt, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W,
+  #cens = C, 
+  shift = d_1yr, # 1 year of treatment
+  folds = 1, 
+  estimator = "lmtp_sdr",  
+  learners_trt = "SL.glm", 
+  learners_outcome = "SL.glm",
+  k = Inf
+)
+
+treat_2yr <- lmtp_survival(
+  data = dt, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W,
+  #cens = C, 
+  shift = d_2yrs, # 2 years of treatment
+  folds = 1,
+  estimator = "lmtp_sdr",  
+  learners_trt = "SL.glm", 
+  learners_outcome = "SL.glm",
+  k = Inf
+)
+
+```
+
+
+```{r, include = FALSE}
+# Testing treatment strategy definitions
+dt2 <- dt
+
+dt2$Aspirin1 <- d_1yr(dt2, "Aspirin1")
+dt2$Aspirin2 <- d_1yr(dt2, "Aspirin2")
+#View(dt2)
+
+treat_1yr <- lmtp_survival(
+  data = dt, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W,
+  #cens = C, 
+  shifted = dt2, # 1 year of treatment
+  folds = 1, 
+  estimator = "lmtp_sdr",  
+  learners_trt = "SL.glm", 
+  learners_outcome = "SL.glm",
+  k = Inf
+)
+
+dt3 <- dt
+
+dt3$Aspirin1 <- d_2yrs(dt3, "Aspirin1")
+dt3$Aspirin2 <- d_2yrs(dt3, "Aspirin2")
+#View(dt3)
+
+treat_2yr <- lmtp_survival(
+  data = dt, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W,
+  #cens = C, 
+  shifted = dt3, # 1 year of treatment
+  folds = 1, 
+  estimator = "lmtp_sdr",  
+  learners_trt = "SL.glm", 
+  learners_outcome = "SL.glm",
+  k = Inf
+)
+
+dt4 <- dt
+
+dt4$Aspirin1 <- d0(dt4, "Aspirin1")
+dt4$Aspirin2 <- d0(dt4, "Aspirin2")
+#View(dt4)
+
+no_treat <- lmtp_survival(
+  data = dt, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W,
+  #cens = C, 
+  shifted = dt4, # 2 years of treatment
+  folds = 1,
+  estimator = "lmtp_sdr",  
+  learners_trt = "SL.glm", 
+  learners_outcome = "SL.glm",
+  k = Inf
+)
+
+
+```
+
+
+## Plot Survival
+
+```{r}
+# Get results in tidy format
+treat_2yr <- tidy(treat_2yr)
+treat_1yr <- tidy(treat_1yr)
+no_treat <- tidy(no_treat)
+
+# Label treatment regimes
+treat_2yr$trt <- "2 years of treatment"
+treat_1yr$trt <- "1 year of treatment"
+no_treat$trt <- "No treatment"
+
+# Stack
+results <- rbind(no_treat, treat_1yr, treat_2yr)
+
+# Plot
+# ggplot(results, aes(x = as.factor(t), y = estimate, color = trt)) + 
+#   #geom_point(position = position_jitter(width = 0.01)) +
+#   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2,
+#   position = position_jitter(width = 0.01)) +
+#   labs(x = "Year", y = "Survival Probability") + 
+#   scale_y_continuous(limits = c(0.20, 0.8), 
+#                      n.breaks = 10, 
+#                      expand = c(0, 0)) +
+#   theme_minimal() +
+#   labs(color = "Treatment Strategy",
+#         title = "Survival after 1 and 2 Years")
+
+# Plot
+ggplot(results, aes(x = as.factor(t), y = estimate, color = trt)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2) +
+  labs(x = "Year", y = "Survival Probability") + 
+  scale_y_continuous(limits = c(0.20, 0.8), 
+                     n.breaks = 10, 
+                     expand = c(0, 0)) +
+  theme_minimal() +
+  labs(color = "Treatment Strategy",
+        title = "Survival after 1 and 2 Years")
+```
+
+## Estimate Average Treatment Effect (ATE)
+
+```{r, warning=FALSE, output = FALSE}
+
+no_treat <- lmtp_sdr(
+  data = dt, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W,
+  shift = d0, 
+  folds = 1, 
+  outcome_type = "survival", 
+  learners_trt = "SL.glm", 
+  learners_outcome = "SL.glm",
+  k = Inf
+)
+
+treat_1yr <- lmtp_sdr(
+  data = dt, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W, 
+  shift = d_1yr, 
+  folds = 1,
+  outcome_type = "survival",   
+  learners_trt = "SL.glm", 
+  learners_outcome = "SL.glm",
+  k = Inf
+)
+
+treat_2yr <- lmtp_sdr(
+  data = dt, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W, 
+  shift = d_2yrs, 
+  folds = 1, 
+  mtp = TRUE,
+  outcome_type = "survival", 
+  learners_trt = "SL.glm", 
+  learners_outcome = "SL.glm",
+  k = Inf
+)
+
+```
+
+## Relative Risk Between Treatment Regimes
+
+Using targeted learning we correctly estimate no evidence of an effect of 
+treatment on survival.
+
+### No treatment *vs* 1 year of treatment
+```{r}
+res <- lmtp_contrast(treat_1yr, ref = no_treat, type = "rr")$vals
+
+kable(res, digits=3)
+```
+
+### No treatment *vs* 2 years of treatment
+
+```{r}
+res <- lmtp_contrast(treat_2yr, ref = no_treat, type = "rr")$vals
+kable(res, digits=3)
+```
+
+### 2 years of treatment *vs* 1 years of treatment
+
+```{r}
+res <- lmtp_contrast(treat_2yr, ref = treat_1yr, type = "rr")$vals
+kable(res, digits=3)
+```
+
+# The polle-package
+
+The same analysis can be made using the polle-package.  
+To utilize the polle-package for estimating average treatment effects (or 
+subgroup effect or optimal treatment policies), data has to be in long format.
+Further, we will have to add a row defining what happens after the last time 
+point of follow-up.
+
+
+### Simulate data
+
+```{r}
+
+dt1 <- data.table(
+  id = seq(1, 12, 1),
+  durA = c(rep(0, 4), rep(1, 4), rep(2, 4)),
+  W1 = rep(0, 12),
+  Aspirin1 = c(rep(0, 4), rep(1, 8)),
+  Dead1 = c(rep(0, 3), 1, rep(0, 3), 1, rep(0, 3), 1),
+  W2 = rep(0, 12),
+  Aspirin2 = c(rep(0, 3), NA, rep(0, 3), NA, rep(1, 3), NA),
+  Dead2 = c(0, rep(1, 3), 0, rep(1, 3), 0, rep(1, 3))
+)
+
+# Replicate the data set 100 times
+dt <- replicate(100, dt1, simplify = FALSE)
+
+# Stack all replicates on top of each other 
+dt <- rbindlist(dt)
+
+# Assign new person ID
+dt[, id := seq(1, dim(dt)[1], 1)]
+```
+
+### Get into long format
+
+```{r}
+
+pd <- melt(
+  data = dt,
+  id.vars = "id",
+  measure.vars = list(A = c("Aspirin1", "Aspirin2"),
+                      W = c("W1", "W2")),
+  variable.name = "time")
+
+# One time per time
+pd[ ,time := as.integer(as.character(time))]
+pd <- pd[complete.cases(pd),] 
+
+pd[, event := 0]
+setkey(pd, id, time)
+
+# Select last row by id
+util <- pd[, .SD[.N], by = list(id)]
+util[ , time := time + 1]
+util[ , U := dt$Dead2]
+util[, event := 1] # ?
+util <- util[, list(id, time, event, U)]
+
+pd <- rbind(pd, util, fill = TRUE)
+pd[is.na(U), U := 0]
+setkey(pd, id, time)
+
+```
+
+### Visualize data format
+
+U: Is the outcome indicator (alive:0 or dead:1)  
+Event: Is the indicator telling that its end of follow-up  
+A: Treatment (Asprin yes/no)  
+W: Baseline covariate required to use the package  
+
+```{r}
+kable(head(pd,12))
+```
+
+### Define *policy_data* object based on survival data in long format
+
+```{r}
+pd <- policy_data(data = pd,
+                  type = "long",
+                  action = "A", # Treatment
+                  utility = "U", # Outcome
+                  id = "id",
+                  stage = "time")
+
+```
+
+### Define treatment policies using *policy_def*
+
+```{r}
+p_0yr <- policy_def(c(0,0), name = "0yr")
+p_1yr <- policy_def(c(1,0), name = "1yr")
+p_2yr <- policy_def(c(1,1), name = "2yr")
+
+```
+
+## Evaluating the policies
+  
+Here we estimate the probability of death after 2 years.
+
+```{r, warning=FALSE}
+
+time <- 2
+
+# Apply each policy
+pe <- lapply(
+  list(p_0yr, p_1yr, p_2yr),
+  function(p) {
+    policy_eval(
+      policy_data = pd,
+      policy = p,
+      g_full_history = TRUE,
+      q_full_history = TRUE,
+      # Treatment/assignment model
+      g_models = replicate(time, g_glm(formula = ~ ., family = quasibinomial())),   
+      # Outcome/q-model
+      q_models = replicate(time, q_glm(formula = ~ A * ., family = quasibinomial()))
+    )
+  }
+)
+
+pe <- do.call(what = "merge", pe)
+
+## Influence functions using the lava-package developed by Klaus Holst (KKZH)
+est <- estimate(pe)
+```
+
+## Plot Survival Probabilities
+```{r}
+
+# Format results for plotting
+results2 <- as.data.table(est$coefmat)
+results2$trt <- rownames(est$coefmat)
+setnames(results2, old = "2.5%", new = "conf.low")
+setnames(results2, old = "97.5%", new = "conf.high")
+results2$t <- "2"
+
+```
+
+```{r}
+# Plot
+ggplot(as.data.frame(results2), aes(x = as.factor(t), y = 1 - Estimate, color = trt)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin = 1 - conf.low, ymax = 1 - conf.high), width = 0.2) +
+  labs(x = "Year", y = "Survival Probability") + 
+  scale_y_continuous(limits = c(0, 0.4), 
+                     n.breaks = 10, 
+                     expand = c(0, 0)) +
+  theme_minimal() +
+  labs(color = "Treatment Strategy",
+        title = "2 Years Probability of Death")
+
+```
+
+## Relative Risk Between Treatment Regimes
+
+Using targeted learning we correctly estimate no evidence of an effect of 
+treatment on survival.
+
+```{r}
+
+rr <- function(object, contrast = 1:2, labels = "1 year / 2 year") {
+  val <- estimate(
+    object,
+    f = function(x) log(x[contrast[1]]) - log(x[contrast[2]]),
+    back.transform = exp, labels = labels, null = 0
+  )
+  res <- val$coefmat
+  res[5] <- val$compare$p.value
+  return(res)
+}
+
+```
+
+### No treatment *vs* 1 year of treatment
+```{r}
+
+res <- rr(
+    est,
+    contrast = c(1, 2),  
+    labels = "No Treatment / 1-year of Treatment")
+
+kable(res, digits=3)
+```
+
+### No treatment *vs* 2 years of treatment
+
+```{r}
+
+res <- rr(
+    est,
+    contrast = c(1,3),
+    labels = "No Treatment / 2-years of Treatment")
+
+kable(res, digits=3)
+```
+
+### 1 year of treatment *vs* 2 years of treatment
+
+```{r}
+res <- rr(
+    est, 
+    contrast = c(2, 3), 
+    labels = "1-year of Treatment / 2-years of Treatment")
+
+kable(res, digits=3)
+```
