@@ -1,51 +1,34 @@
 ---
-title: Targeted Learning as an Alternative to Cloning-Censoring Weighting
-author: 
-  - name: Peter Bruun-Rasmussen (PBRZ)
-    affiliations: Targeted Learning & Causal Inference
-title-block-banner: "#001965"
-format:
-  html:
-    toc: true
-    toc-location: left
-    self-contained: true
+title: "Targeted Learning as an Alternative to Cloning Censoring Weighting"
+description: "Tutorial demonstrating how targeted learning can be used to prevent immortal time bias similarly to what is achieved with cloning-censoring weighting."
+author: "Peter Bruun-Rasmussen"
+date: "05/25/2025"
+draft: False
+date-modified: last-modified
+bibliography: references.bib
+categories: 
+  - causal inference
+  - study design
+  - targeted learning
 ---
-*This report is not to be shared without agreement with the author.*  
-
-Date: 2024-12-05  
-
-**Collaborators:** Volker Schnecke (VLSN), Britt Wang Jensen (BTWJ), 
-Alex Mourer (OAXM), and Nils Skajaa (NXCS)
-
 
 In this tutorial I demonstrate how targeted learning can 
 (conveniently) be used as an alternative to cloning-censoring weighting.
-Using targeted learning further gives the benefits of double robustness and
+Targeted learning further gives the benefits of double robustness and
 the possibility to use data-adaptive methods (machine learning), thus minimizing
-the potential for model misspecification bias. These properties are not given 
+the potential for model mis-specification bias. These properties are not given 
 intrinsically using cloning-censoring weighting. Further, the data wrangling
 required before analysis is much simpler using the proposed targeted learning
 approach as compared with cloning-censoring weighting.  
 
-Here, targeted learning is utilized through the lmtp package [1], and the 
-in-house polle package build by Andreas Nordland (OANO)[2]. 
+Here, targeted learning is utilized through the lmtp package(@lmtp), and the polle package (@polle). 
 
-An advantage of the polle-package compared to other available packages 
+An advantage of the polle-package as compared to packages for targeted learning
 (lmtp/tmle) is that it is also developed to answer questions of subgroup effects
  and to identify optimal treatment policies.
- 
-[1] https://www.tandfonline.com/doi/full/10.1080/01621459.2021.1955691  
-[2] https://arxiv.org/abs/2212.02335 
-
-
+  
 ```{r, output = FALSE}
 set.seed(8)
-
-# Development version of lmtp
-if (!require("lmtp")) devtools::install_github("nt-williams/lmtp@devel")
-
-# Development version of polle
-if (!require("polle")) devtools::install_github("AndreasNordland/polle")
 
 # Pacman used to install and load all packages
 if (!require("pacman")) install.packages("pacman")
@@ -63,23 +46,19 @@ pacman::p_load(
 # Data Example from Paper by Miguel Hernan
 
 In the paper: "How to estimate the effect of treatment duration on survival 
-outcomes using observational data", Miguel Hernan demonstrates how 
+outcomes using observational data", @hernan demonstrates how 
 cloning-censoring weighting can be used to estimate the true effect of 
-treatment duration on survival outcomes.[1] In his example, 1 or 2 years of 
+treatment duration on survival outcomes. In his example, 1 or 2 years of 
 Aspirin treatment has no effect on all-cause mortality. 
  
-Miguel demonstrates that a naive analysis would show an effect even though
-there is non, while cloning-censoring weighting will avoid this bias. 
-In the example there is no confounding or censoring. 
+Hernan demonstrates that a naive analysis would show an effect even though
+there is non due to immortal time bias, while cloning-censoring weighting will avoid this bias. In the example there is no confounding or censoring. 
 
 Here I use the exact same dataset for demonstrative purposes to show that a
 targeted learning approach also estimates the true effect of treatment
 (no effect).  
 
-You can compare the dataset below with the dataset in the paper to see that
-they are the same.  
-
-[1] https://www.bmj.com/content/360/bmj.k182.long  
+You can compare the dataset below with the dataset in the paper to convince yourself that they are the same.   
 
 ```{r}
 
@@ -95,17 +74,17 @@ dt1 <- data.table(
 kable(dt1)
 
 ```
-## Naive and Biased Analysis
+## Naive and (Immortal Time) Biased Analysis
 
 ### Probability of death for patients actually taking aspirin for 2 years
 
-9, 10, ands 11 survived to the second year and are on aspirin at start of 
+9, 10, and 11 survived to the second year and are on aspirin at start of 
 second year.
 
 ```{r}
 dt1[Aspirin2 == "Yes"]
 deaths_aspirin2 <- 2/3
-round(deaths_aspirin2,2)
+round(deaths_aspirin2, 2)
 ```
 
 ### Probability of death for patients **not** taking aspirin
@@ -371,20 +350,7 @@ no_treat$trt <- "No treatment"
 results <- rbind(no_treat, treat_1yr, treat_2yr)
 
 # Plot
-# ggplot(results, aes(x = as.factor(t), y = estimate, color = trt)) + 
-#   #geom_point(position = position_jitter(width = 0.01)) +
-#   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2,
-#   position = position_jitter(width = 0.01)) +
-#   labs(x = "Year", y = "Survival Probability") + 
-#   scale_y_continuous(limits = c(0.20, 0.8), 
-#                      n.breaks = 10, 
-#                      expand = c(0, 0)) +
-#   theme_minimal() +
-#   labs(color = "Treatment Strategy",
-#         title = "Survival after 1 and 2 Years")
-
-# Plot
-ggplot(results, aes(x = as.factor(t), y = estimate, color = trt)) + 
+ggplot(results, aes(x = as.factor(time), y = estimate, color = trt)) + 
   geom_point() +
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2) +
   labs(x = "Year", y = "Survival Probability") + 
@@ -449,24 +415,24 @@ treatment on survival.
 
 ### No treatment *vs* 1 year of treatment
 ```{r}
-res <- lmtp_contrast(treat_1yr, ref = no_treat, type = "rr")$vals
-
+res <- lmtp_contrast(treat_1yr, ref = no_treat, type = "rr")$estimates
 kable(res, digits=3)
 ```
 
 ### No treatment *vs* 2 years of treatment
 
 ```{r}
-res <- lmtp_contrast(treat_2yr, ref = no_treat, type = "rr")$vals
+res <- lmtp_contrast(treat_2yr, ref = no_treat, type = "rr")$estimates
 kable(res, digits=3)
 ```
 
 ### 2 years of treatment *vs* 1 years of treatment
 
 ```{r}
-res <- lmtp_contrast(treat_2yr, ref = treat_1yr, type = "rr")$vals
+res <- lmtp_contrast(treat_2yr, ref = treat_1yr, type = "rr")$estimates
 kable(res, digits=3)
 ```
+Here the estimate is the risk ratio which is estimated to be 1 in all comparisons indicating no difference in effect of treatments.
 
 # The polle-package
 
@@ -592,7 +558,7 @@ pe <- lapply(
 
 pe <- do.call(what = "merge", pe)
 
-## Influence functions using the lava-package developed by Klaus Holst (KKZH)
+## Influence functions using the lava-package
 est <- estimate(pe)
 ```
 

@@ -109,6 +109,111 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "Here I post on target trial emulation, causal inference, and targeted learning related topics.\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Here I post on target trial emulation, causal inference, and targeted learning related topics.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTargeted Learning as an Alternative to Cloning Censoring Weighting\n\n\n\ncausal inference\n\nstudy design\n\ntargeted learning\n\n\n\nTutorial demonstrating how targeted learning can be used to prevent immortal time bias similarly to what is achieved with cloning-censoring weighting.\n\n\n\n\n\nMay 25, 2025\n\n\nPeter Bruun-Rasmussen\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "",
+    "text": "In this tutorial I demonstrate how targeted learning can (conveniently) be used as an alternative to cloning-censoring weighting. Targeted learning further gives the benefits of double robustness and the possibility to use data-adaptive methods (machine learning), thus minimizing the potential for model mis-specification bias. These properties are not given intrinsically using cloning-censoring weighting. Further, the data wrangling required before analysis is much simpler using the proposed targeted learning approach as compared with cloning-censoring weighting.\nHere, targeted learning is utilized through the lmtp package(Díaz et al. (2023)), and the polle package (Nordland and Holst (2022)).\nAn advantage of the polle-package as compared to packages for targeted learning (lmtp/tmle) is that it is also developed to answer questions of subgroup effects and to identify optimal treatment policies.\nset.seed(8)\n\n# Pacman used to install and load all packages\nif (!require(\"pacman\")) install.packages(\"pacman\")\n# Load packages\npacman::p_load(\n    \"lmtp\", \n    \"data.table\", \n    \"ggplot2\", \n    \"knitr\",\n    \"polle\")"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#naive-and-biased-analysis",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#naive-and-biased-analysis",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Naive and Biased Analysis",
+    "text": "Naive and Biased Analysis\n\nProbability of death for patients actually taking aspirin for 2 years\n9, 10, ands 11 survived to the second year and are on aspirin at start of second year.\n\ndt1[Aspirin2 == \"Yes\"]\n\n   Person  durA Aspirin1  Dead1 Aspirin2  Dead2\n    &lt;num&gt; &lt;num&gt;   &lt;char&gt; &lt;char&gt;   &lt;char&gt; &lt;char&gt;\n1:      9     2      Yes     No      Yes     No\n2:     10     2      Yes     No      Yes    Yes\n3:     11     2      Yes     No      Yes    Yes\n\ndeaths_aspirin2 &lt;- 2/3\nround(deaths_aspirin2,2)\n\n[1] 0.67\n\n\n\n\nProbability of death for patients not taking aspirin\nThe patients who did not receive aspirin in the data are 1, 2, 3, and 4.\n\ndt1[Aspirin1 == \"No\" & Aspirin2 %in% c(\"No\",\"-\")]\n\n   Person  durA Aspirin1  Dead1 Aspirin2  Dead2\n    &lt;num&gt; &lt;num&gt;   &lt;char&gt; &lt;char&gt;   &lt;char&gt; &lt;char&gt;\n1:      1     0       No     No       No     No\n2:      2     0       No     No       No    Yes\n3:      3     0       No     No       No    Yes\n4:      4     0       No    Yes        -    Yes\n\ndeaths_no_aspirin &lt;- 3/4\nround(deaths_no_aspirin,2)\n\n[1] 0.75\n\n\n\n\nNaive treatment effect of 2 years Aspirin vs no aspirin\n\nround(deaths_aspirin2 / deaths_no_aspirin, 2)\n\n[1] 0.89\n\n\nThe relative risk difference is less than 1 even though there is no effect.\nFrom the paper: “This is not surprising: the average survival is longer in people who received two years of treatment because they were alive for at least two years. By definition, people receiving treatment were “immortal” during those two years, which is why the bias of this naive analysis is referred to as immortal time bias.”"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#format-dataset-for-analysis-using-targeted-learning",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#format-dataset-for-analysis-using-targeted-learning",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Format Dataset for Analysis using Targeted Learning",
+    "text": "Format Dataset for Analysis using Targeted Learning\nI replace “Yes” and “No” with 1 and 0, respectively.\nFurther, I code missing values as NA instead of “-”.\nOne can chose to adjust for censoring and confounding as well using targeted learning, however in this example for simplicity there is non.\n\ndt1 &lt;- data.table(\n  Person = seq(1, 12, 1),\n  durA = c(rep(0, 4), rep(1, 4), rep(2, 4)),\n  Aspirin1 = c(rep(0, 4), rep(1, 8)),\n  Dead1 = c(rep(0, 3), 1, rep(0, 3), 1, rep(0, 3), 1),\n  Aspirin2 = c(rep(0, 3), NA, rep(0, 3), NA, rep(1, 3), NA),\n  Dead2 = c(0, rep(1, 3), 0, rep(1, 3), 0, rep(1, 3))\n)\n\n# If censoring indicators are needed (here they are not)\n#dt1[, Censoring1 := 1]\n#dt1[, Censoring2 := ifelse(Dead1 == 1, NA, 1)]\n# Order\n#dt1 &lt;- dt1[, \n#  .(Person, durA, Aspirin1, Censoring1, Dead1, Aspirin2, Censoring2, Dead2)]\n\n# Show data.table\nkable(dt1)\n\n\n\n\nPerson\ndurA\nAspirin1\nDead1\nAspirin2\nDead2\n\n\n\n\n1\n0\n0\n0\n0\n0\n\n\n2\n0\n0\n0\n0\n1\n\n\n3\n0\n0\n0\n0\n1\n\n\n4\n0\n0\n1\nNA\n1\n\n\n5\n1\n1\n0\n0\n0\n\n\n6\n1\n1\n0\n0\n1\n\n\n7\n1\n1\n0\n0\n1\n\n\n8\n1\n1\n1\nNA\n1\n\n\n9\n2\n1\n0\n1\n0\n\n\n10\n2\n1\n0\n1\n1\n\n\n11\n2\n1\n0\n1\n1\n\n\n12\n2\n1\n1\nNA\n1"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#replicate-the-dataset-100-times-for-power",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#replicate-the-dataset-100-times-for-power",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Replicate the Dataset 100 times for Power",
+    "text": "Replicate the Dataset 100 times for Power\n\n# Replicate the data set 100 times\ndt &lt;- replicate(100, dt1, simplify = FALSE)\n\n# Stack all replicates on top of each other\ndt &lt;- rbindlist(dt)\n\n# Assign new person ID\ndt[, id := seq(1, dim(dt)[1], 1)]\n\n# Set random baseline confounder with no confounding\n# This is required for the lmtp software to run\n#dt[, W1 := rbinom(n = nrow(dt), size = 1, prob = 0.5)]\ndt[, W1 := 0]\n\n# data.frame is required by lmtp package\ndt &lt;- as.data.frame((dt))"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#define-treatment-strategies",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#define-treatment-strategies",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Define Treatment Strategies",
+    "text": "Define Treatment Strategies\nWe estimate the effect of 2-year survival comparing 3 treatment strategies:\n\nNo aspirin treatment\n\n1-year of treatment with aspirin\n2-years of treatment with aspirin\n\nTo obtain this comparison analytically we define the treatment indicators as follows:\nTreatment strategy 1 can be defined as a constant 0.\nTreatment strategy 2 can be defined as 1 in the first year, and 0 in year 2.\nTreatment strategy 3 as a constant 1.\n\n# Never treat\nd0 &lt;- function(data, trt) {\n  rep(0, nrow(data))\n}\n\n# Treat 1-year and then stop treatment\nd_1yr &lt;- function(data, trt) {\n  if (trt == \"Aspirin1\") return(rep(1, nrow(data)))\n  if (trt == \"Aspirin2\") return(rep(0, nrow(data)))\n}\n\n# Treat for 2-years (always treat)\nd_2yrs &lt;- function(data, trt) {\n  rep(1, nrow(data))\n}"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#define-outcome-and-treatment-variables",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#define-outcome-and-treatment-variables",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Define Outcome and Treatment Variables",
+    "text": "Define Outcome and Treatment Variables\n\nA &lt;- c(\"Aspirin1\", \"Aspirin2\")\nY &lt;- c(\"Dead1\", \"Dead2\")\nC &lt;- c(\"Censoring1\", \"Censoring2\") # No censoring in this example\nW &lt;- c(\"W1\")"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#comparative-effectiveness-between-treatment-strategies",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#comparative-effectiveness-between-treatment-strategies",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Comparative Effectiveness between Treatment Strategies",
+    "text": "Comparative Effectiveness between Treatment Strategies"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#estimate-survival",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#estimate-survival",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Estimate Survival",
+    "text": "Estimate Survival\nNo treatment, 1 year of treatment, and 2 years of treatment.\n\nno_treat &lt;- lmtp_survival(\n  data = dt, \n  trt = A, \n  outcome = Y, \n  baseline = W,\n  #cens = C,\n  shift = d0, # No treatment\n  folds = 1, \n  estimator = \"lmtp_sdr\",  \n  learners_trt = \"SL.glm\", \n  learners_outcome = \"SL.glm\",\n  k = Inf\n)\n\ntreat_1yr &lt;- lmtp_survival(\n  data = dt, \n  trt = A, \n  outcome = Y, \n  baseline = W,\n  #cens = C, \n  shift = d_1yr, # 1 year of treatment\n  folds = 1, \n  estimator = \"lmtp_sdr\",  \n  learners_trt = \"SL.glm\", \n  learners_outcome = \"SL.glm\",\n  k = Inf\n)\n\ntreat_2yr &lt;- lmtp_survival(\n  data = dt, \n  trt = A, \n  outcome = Y, \n  baseline = W,\n  #cens = C, \n  shift = d_2yrs, # 2 years of treatment\n  folds = 1,\n  estimator = \"lmtp_sdr\",  \n  learners_trt = \"SL.glm\", \n  learners_outcome = \"SL.glm\",\n  k = Inf\n)"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#plot-survival",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#plot-survival",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Plot Survival",
+    "text": "Plot Survival\n\n# Get results in tidy format\ntreat_2yr &lt;- tidy(treat_2yr)\ntreat_1yr &lt;- tidy(treat_1yr)\nno_treat &lt;- tidy(no_treat)\n\n# Label treatment regimes\ntreat_2yr$trt &lt;- \"2 years of treatment\"\ntreat_1yr$trt &lt;- \"1 year of treatment\"\nno_treat$trt &lt;- \"No treatment\"\n\n# Stack\nresults &lt;- rbind(no_treat, treat_1yr, treat_2yr)\n\n# Plot\nggplot(results, aes(x = as.factor(time), y = estimate, color = trt)) + \n  geom_point() +\n  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2) +\n  labs(x = \"Year\", y = \"Survival Probability\") + \n  scale_y_continuous(limits = c(0.20, 0.8), \n                     n.breaks = 10, \n                     expand = c(0, 0)) +\n  theme_minimal() +\n  labs(color = \"Treatment Strategy\",\n        title = \"Survival after 1 and 2 Years\")"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#estimate-average-treatment-effect-ate",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#estimate-average-treatment-effect-ate",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Estimate Average Treatment Effect (ATE)",
+    "text": "Estimate Average Treatment Effect (ATE)\n\nno_treat &lt;- lmtp_sdr(\n  data = dt, \n  trt = A, \n  outcome = Y, \n  baseline = W,\n  shift = d0, \n  folds = 1, \n  outcome_type = \"survival\", \n  learners_trt = \"SL.glm\", \n  learners_outcome = \"SL.glm\",\n  k = Inf\n)\n\ntreat_1yr &lt;- lmtp_sdr(\n  data = dt, \n  trt = A, \n  outcome = Y, \n  baseline = W, \n  shift = d_1yr, \n  folds = 1,\n  outcome_type = \"survival\",   \n  learners_trt = \"SL.glm\", \n  learners_outcome = \"SL.glm\",\n  k = Inf\n)\n\ntreat_2yr &lt;- lmtp_sdr(\n  data = dt, \n  trt = A, \n  outcome = Y, \n  baseline = W, \n  shift = d_2yrs, \n  folds = 1, \n  mtp = TRUE,\n  outcome_type = \"survival\", \n  learners_trt = \"SL.glm\", \n  learners_outcome = \"SL.glm\",\n  k = Inf\n)"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#relative-risk-between-treatment-regimes",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#relative-risk-between-treatment-regimes",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Relative Risk Between Treatment Regimes",
+    "text": "Relative Risk Between Treatment Regimes\nUsing targeted learning we correctly estimate no evidence of an effect of treatment on survival.\n\nNo treatment vs 1 year of treatment\n\nres &lt;- lmtp_contrast(treat_1yr, ref = no_treat, type = \"rr\")$estimates\nkable(res, digits=3)\n\n\n\n\nshift\nref\nestimate\nstd.error\nconf.low\nconf.high\np.value\n\n\n\n\n0.25\n0.25\n1\n0.121\n0.763\n1.237\n0\n\n\n\n\n\n\n\nNo treatment vs 2 years of treatment\n\nres &lt;- lmtp_contrast(treat_2yr, ref = no_treat, type = \"rr\")$estimates\nkable(res, digits=3)\n\n\n\n\nshift\nref\nestimate\nstd.error\nconf.low\nconf.high\np.value\n\n\n\n\n0.25\n0.25\n1\n0.121\n0.763\n1.237\n0\n\n\n\n\n\n\n\n2 years of treatment vs 1 years of treatment\n\nres &lt;- lmtp_contrast(treat_2yr, ref = treat_1yr, type = \"rr\")$estimates\nkable(res, digits=3)\n\n\n\n\nshift\nref\nestimate\nstd.error\nconf.low\nconf.high\np.value\n\n\n\n\n0.25\n0.25\n1\n0.116\n0.774\n1.226\n0\n\n\n\n\n\nHere the estimate is the risk ratio which is estimated to be 1 in all comparisons indicating no difference in effect of treatments."
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#evaluating-the-policies",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#evaluating-the-policies",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Evaluating the policies",
+    "text": "Evaluating the policies\nHere we estimate the probability of death after 2 years.\n\ntime &lt;- 2\n\n# Apply each policy\npe &lt;- lapply(\n  list(p_0yr, p_1yr, p_2yr),\n  function(p) {\n    policy_eval(\n      policy_data = pd,\n      policy = p,\n      g_full_history = TRUE,\n      q_full_history = TRUE,\n      # Treatment/assignment model\n      g_models = replicate(time, g_glm(formula = ~ ., family = quasibinomial())),   \n      # Outcome/q-model\n      q_models = replicate(time, q_glm(formula = ~ A * ., family = quasibinomial()))\n    )\n  }\n)\n\npe &lt;- do.call(what = \"merge\", pe)\n\n## Influence functions using the lava-package\nest &lt;- estimate(pe)"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#plot-survival-probabilities",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#plot-survival-probabilities",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Plot Survival Probabilities",
+    "text": "Plot Survival Probabilities\n\n# Format results for plotting\nresults2 &lt;- as.data.table(est$coefmat)\nresults2$trt &lt;- rownames(est$coefmat)\nsetnames(results2, old = \"2.5%\", new = \"conf.low\")\nsetnames(results2, old = \"97.5%\", new = \"conf.high\")\nresults2$t &lt;- \"2\"\n\n\n# Plot\nggplot(as.data.frame(results2), aes(x = as.factor(t), y = 1 - Estimate, color = trt)) + \n  geom_point() +\n  geom_errorbar(aes(ymin = 1 - conf.low, ymax = 1 - conf.high), width = 0.2) +\n  labs(x = \"Year\", y = \"Survival Probability\") + \n  scale_y_continuous(limits = c(0, 0.4), \n                     n.breaks = 10, \n                     expand = c(0, 0)) +\n  theme_minimal() +\n  labs(color = \"Treatment Strategy\",\n        title = \"2 Years Probability of Death\")"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#relative-risk-between-treatment-regimes-1",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#relative-risk-between-treatment-regimes-1",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Relative Risk Between Treatment Regimes",
+    "text": "Relative Risk Between Treatment Regimes\nUsing targeted learning we correctly estimate no evidence of an effect of treatment on survival.\n\nrr &lt;- function(object, contrast = 1:2, labels = \"1 year / 2 year\") {\n  val &lt;- estimate(\n    object,\n    f = function(x) log(x[contrast[1]]) - log(x[contrast[2]]),\n    back.transform = exp, labels = labels, null = 0\n  )\n  res &lt;- val$coefmat\n  res[5] &lt;- val$compare$p.value\n  return(res)\n}\n\n\nNo treatment vs 1 year of treatment\n\nres &lt;- rr(\n    est,\n    contrast = c(1, 2),  \n    labels = \"No Treatment / 1-year of Treatment\")\n\nkable(res, digits=3)\n\n\n\n\n\n\n\n\n\n\n\n\n\nEstimate\nStd.Err\n2.5%\n97.5%\nP-value\n\n\n\n\nNo Treatment / 1-year of Treatment\n1\nNA\n0.924\n1.082\n1\n\n\n\n\n\n\n\nNo treatment vs 2 years of treatment\n\nres &lt;- rr(\n    est,\n    contrast = c(1,3),\n    labels = \"No Treatment / 2-years of Treatment\")\n\nkable(res, digits=3)\n\n\n\n\n\n\n\n\n\n\n\n\n\nEstimate\nStd.Err\n2.5%\n97.5%\nP-value\n\n\n\n\nNo Treatment / 2-years of Treatment\n1\nNA\n0.924\n1.082\n1\n\n\n\n\n\n\n\n1 year of treatment vs 2 years of treatment\n\nres &lt;- rr(\n    est, \n    contrast = c(2, 3), \n    labels = \"1-year of Treatment / 2-years of Treatment\")\n\nkable(res, digits=3)\n\n\n\n\n\n\n\n\n\n\n\n\n\nEstimate\nStd.Err\n2.5%\n97.5%\nP-value\n\n\n\n\n1-year of Treatment / 2-years of Treatment\n1\nNA\n0.927\n1.078\n1"
+  },
+  {
+    "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#naive-and-immortal-time-biased-analysis",
+    "href": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html#naive-and-immortal-time-biased-analysis",
+    "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
+    "section": "Naive and (Immortal Time) Biased Analysis",
+    "text": "Naive and (Immortal Time) Biased Analysis\n\nProbability of death for patients actually taking aspirin for 2 years\n9, 10, and 11 survived to the second year and are on aspirin at start of second year.\n\ndt1[Aspirin2 == \"Yes\"]\n\n   Person  durA Aspirin1  Dead1 Aspirin2  Dead2\n    &lt;num&gt; &lt;num&gt;   &lt;char&gt; &lt;char&gt;   &lt;char&gt; &lt;char&gt;\n1:      9     2      Yes     No      Yes     No\n2:     10     2      Yes     No      Yes    Yes\n3:     11     2      Yes     No      Yes    Yes\n\ndeaths_aspirin2 &lt;- 2/3\nround(deaths_aspirin2, 2)\n\n[1] 0.67\n\n\n\n\nProbability of death for patients not taking aspirin\nThe patients who did not receive aspirin in the data are 1, 2, 3, and 4.\n\ndt1[Aspirin1 == \"No\" & Aspirin2 %in% c(\"No\",\"-\")]\n\n   Person  durA Aspirin1  Dead1 Aspirin2  Dead2\n    &lt;num&gt; &lt;num&gt;   &lt;char&gt; &lt;char&gt;   &lt;char&gt; &lt;char&gt;\n1:      1     0       No     No       No     No\n2:      2     0       No     No       No    Yes\n3:      3     0       No     No       No    Yes\n4:      4     0       No    Yes        -    Yes\n\ndeaths_no_aspirin &lt;- 3/4\nround(deaths_no_aspirin,2)\n\n[1] 0.75\n\n\n\n\nNaive treatment effect of 2 years Aspirin vs no aspirin\n\nround(deaths_aspirin2 / deaths_no_aspirin, 2)\n\n[1] 0.89\n\n\nThe relative risk difference is less than 1 even though there is no effect.\nFrom the paper: “This is not surprising: the average survival is longer in people who received two years of treatment because they were alive for at least two years. By definition, people receiving treatment were “immortal” during those two years, which is why the bias of this naive analysis is referred to as immortal time bias.”"
   }
 ]

@@ -79,9 +79,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -191,7 +191,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(0)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y2F1c2FsJTIwaW5mZXJlbmNl">causal inference <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c3R1ZHklMjBkZXNpZ24=">study design <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGFyZ2V0ZWQlMjBsZWFybmluZw==">targeted learning <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -221,7 +221,40 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="Y2F1c2FsJTIwaW5mZXJlbmNlJTJDc3R1ZHklMjBkZXNpZ24lMkN0YXJnZXRlZCUyMGxlYXJuaW5n" data-listing-date-sort="1748124000000" data-listing-file-modified-sort="1748714058901" data-listing-date-modified-sort="1748714058000" data-listing-reading-time-sort="13" data-listing-word-count-sort="2564">
+<div class="thumbnail"><a href="./posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html" class="no-external">
 
+<p class="card-img-top"><img src="posts\2025\01-targeted_learning_vs_cloning_censoring_weighting\index_files\figure-html\unnamed-chunk-12-1.png"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html" class="no-external">Targeted Learning as an Alternative to Cloning Censoring Weighting</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Y2F1c2FsJTIwaW5mZXJlbmNl'); return false;">causal inference</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('c3R1ZHklMjBkZXNpZ24='); return false;">study design</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('dGFyZ2V0ZWQlMjBsZWFybmluZw=='); return false;">targeted learning</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html" class="no-external">
+<p>Tutorial demonstrating how targeted learning can be used to prevent immortal time bias similarly to what is achieved with cloning-censoring weighting.</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html" class="no-external">
+<div class="listing-date">
+May 25, 2025
+</div>
+<div class="listing-author">
+Peter Bruun-Rasmussen
+</div>
+</a>
+</div>
+</div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
 </div></main> <!-- /main -->
