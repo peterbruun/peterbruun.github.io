@@ -16,9 +16,9 @@ In this tutorial I demonstrate how targeted learning can
 (conveniently) be used as an alternative to cloning-censoring weighting.
 Targeted learning further gives the benefits of double robustness and
 the possibility to use data-adaptive methods (machine learning), thus minimizing
-the potential for model mis-specification bias. These properties are not given 
-intrinsically using cloning-censoring weighting. Further, the data wrangling
-required before analysis is much simpler using the proposed targeted learning
+the potential for model mis-specification bias (@tmle). These properties are not 
+intrinsically given using cloning-censoring weighting.  
+Further, the data wrangling required before analysis is much simpler using the proposed targeted learning
 approach as compared with cloning-censoring weighting.  
 
 Here, targeted learning is utilized through the lmtp package(@lmtp), and the polle package (@polle). 
@@ -436,7 +436,7 @@ Here the estimate is the risk ratio which is estimated to be 1 in all comparison
 
 # The polle-package
 
-The same analysis can be made using the polle-package.  
+The same analysis can be made using the polle-package (@polle).  
 To utilize the polle-package for estimating average treatment effects (or 
 subgroup effect or optimal treatment policies), data has to be in long format.
 Further, we will have to add a row defining what happens after the last time 

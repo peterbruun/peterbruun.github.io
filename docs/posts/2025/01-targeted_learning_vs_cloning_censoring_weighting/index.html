@@ -287,7 +287,8 @@ div.csl-indent {
 </header>
 
 
-<p>In this tutorial I demonstrate how targeted learning can (conveniently) be used as an alternative to cloning-censoring weighting. Targeted learning further gives the benefits of double robustness and the possibility to use data-adaptive methods (machine learning), thus minimizing the potential for model mis-specification bias. These properties are not given intrinsically using cloning-censoring weighting. Further, the data wrangling required before analysis is much simpler using the proposed targeted learning approach as compared with cloning-censoring weighting.</p>
+<p>In this tutorial I demonstrate how targeted learning can (conveniently) be used as an alternative to cloning-censoring weighting. Targeted learning further gives the benefits of double robustness and the possibility to use data-adaptive methods (machine learning), thus minimizing the potential for model mis-specification bias (<span class="citation" data-cites="tmle">Schuler and Rose (<a href="#ref-tmle" role="doc-biblioref">2017</a>)</span>). These properties are not intrinsically given using cloning-censoring weighting.<br>
+Further, the data wrangling required before analysis is much simpler using the proposed targeted learning approach as compared with cloning-censoring weighting.</p>
 <p>Here, targeted learning is utilized through the lmtp package(<span class="citation" data-cites="lmtp">Díaz et al. (<a href="#ref-lmtp" role="doc-biblioref">2023</a>)</span>), and the polle package (<span class="citation" data-cites="polle">Nordland and Holst (<a href="#ref-polle" role="doc-biblioref">2022</a>)</span>).</p>
 <p>An advantage of the polle-package as compared to packages for targeted learning (lmtp/tmle) is that it is also developed to answer questions of subgroup effects and to identify optimal treatment policies.</p>
 <div class="cell">
@@ -1340,6 +1341,9 @@ Hernán, Miguel A. 2018. <span>“How to Estimate the Effect of Treatment Durati
 </div>
 <div id="ref-polle" class="csl-entry" role="listitem">
 Nordland, Andreas, and Klaus K. Holst. 2022. <span>“Policy Learning with the Polle Package.”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2212.02335">https://doi.org/10.48550/arXiv.2212.02335</a>.
+</div>
+<div id="ref-tmle" class="csl-entry" role="listitem">
+Schuler, Megan S., and Sherri Rose. 2017. <span>“Targeted Maximum Likelihood Estimation for Causal Inference in Observational Studies.”</span> <em>American Journal of Epidemiology</em> 185 (1): 65–73. <a href="https://doi.org/10.1093/aje/kww165">https://doi.org/10.1093/aje/kww165</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
