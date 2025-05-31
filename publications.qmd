@@ -9,13 +9,13 @@ title: Publications
 **Bruun-Rasmussen P**, Kragh Andersen P, Banasik K, Brunak S, Johansson PI. Blood. 2022 Jun 23;139(25):3647-3654.doi: <https://doi.org/10.1182/blood.2022015892>. PMID: 35482965; PMCID: PMC9227103.  
 
 2. **Estimating the effect of donor sex on red blood cell transfused patient mortality: A retrospective cohort study using a targeted learning and emulated trials-based approach**    
-**Bruun-Rasmussen P**, Andersen PK, Banasik K, Brunak S, Johansson PI. . EClinicalMedicine. 2022 Aug 27;51:101628. doi: <https://doi.org/10.1016/j.eclinm.2022.101628>. PMID: 36176312; PMCID: PMC9513555.
+**Bruun-Rasmussen P**, Andersen PK, Banasik K, Brunak S, Johansson PI. EClinicalMedicine. 2022 Aug 27;51:101628. doi: <https://doi.org/10.1016/j.eclinm.2022.101628>. PMID: 36176312; PMCID: PMC9513555.
 
 3. **Associations of ABO and Rhesus D blood groups with phenome-wide disease incidence: A 41-year retrospective cohort study of 482,914 patients**    
 **Bruun-Rasmussen P**, Hanefeld Dziegiel M, Banasik K, Johansson PI, Brunak S. . Elife. 2023 Mar 9;12:e83116. doi: <https://doi.org/10.7554/eLife.83116>. PMID: 36892462; PMCID: PMC10042530.
 
 4. **Large-scale study of Toxoplasma and Cytomegalovirus shows an association between infection and serious psychiatric disorders**   
-Burgdorf KS, Trabjerg BB, Pedersen MG, Nissen J, Banasik K, Pedersen OB, Sørensen E, Nielsen KR, Larsen MH, Erikstrup C, **Bruun-Rasmussen P**, Westergaard D, Thørner LW, Hjalgrim H, Paarup HM, Brunak S, Pedersen CB, Torrey EF, Werge T, Mortensen PB, Yolken RH, Ullum H. . Brain Behav Immun. 2019 Jul;79:152-158.     
+Burgdorf KS, Trabjerg BB, Pedersen MG, Nissen J, Banasik K, Pedersen OB, Sørensen E, Nielsen KR, Larsen MH, Erikstrup C, **Bruun-Rasmussen P**, Westergaard D, Thørner LW, Hjalgrim H, Paarup HM, Brunak S, Pedersen CB, Torrey EF, Werge T, Mortensen PB, Yolken RH, Ullum H. Brain Behav Immun. 2019 Jul;79:152-158.     
 doi: <https://doi.org/10.1016/j.bbi.2019.01.026>. Epub 2019 Jan 29. PMID: 30685531.
 
 5. **Herpes Simplex Virus Type 1 infection is associated with suicidal behavior and first registered psychiatric diagnosis in a healthy population**   
