@@ -1,0 +1,71 @@
+---
+title: "Getting started learning Target Trial Emulation (two-pager) "
+description: "This post serves as a suggestion as to how one can get started learning about target trial emulation (TTE). "
+author: "Peter Bruun-Rasmussen"
+date: "06/01/2025"
+draft: True
+date-modified: last-modified
+bibliography: references.bib
+categories: 
+  - target trial emulation
+  - causal inference
+  - study design
+  - targeted learning
+---
+
+
+1. Learn causal diagrams / directed acyclic graphs 
+
+The core of TTE is the research question and the required study assumptions required to answer it. Here directed acyclic graphs are a key tool. This helps you identify confounding, and the adjustment sets required to obtain exchangeability (that is, emulate randomization). 
+
+I suggest starting with the free course: Causal Diagrams: Draw You Assumptions Before Your Conclusions, by Miguel Hernan and Harvard. https://pll.harvard.edu/course/causal-diagrams-draw-your-assumptions-your-conclusions  
+
+Learn to use DAGitty 
+
+Drawing DAGs and identifying open backdoor paths (confounding) and colliders can be challenging. Luckily, tools exist that can help you do this automatically. One such tool is DAGitty. DAGitty is a free online-tool which can be found here: https://www.dagitty.net/dags.html#  
+
+There are several DAGitty tutorials on youtube, one suggestion could be this one: https://www.youtube.com/watch?v=3euqrnD9w7c  
+
+Read the “What if” book 
+
+This is somewhat long read, but I really encourage you to take up the challenge. 
+This book is a must read if you want to master the art of TTE. Read one chapter for breakfast each morning and you will soon be a TTE master. 
+Free book: https://miguelhernan.org/whatifbook  
+
+Read PRINCIPLED 
+
+The people behind the RCT-DUPLICATE initiative have made a great guide on how to use healthcare registry data and claims data (what we have available) to generate decision grade evidence using TTE. Their paper can be found here: https://www.bmj.com/content/384/bmj-2023-076460  
+
+ 
+
+Trial Design 
+
+Active comparator new user design (ACNU), or sequential nested trial design? 
+
+If a clear time-zero is available for both the treatment and comparator arm - use the ACNU: https://pmc.ncbi.nlm.nih.gov/articles/PMC4486631/ 
+If no clear time-zero exists for one of the arms - use sequential nested trial design. 
+https://www.sciencedirect.com/science/article/pii/S0895435616301366?via%3Dihub 
+
+Learn the statistical methods required 
+
+I cannot state enough that the methods should be your last focus point. These methods will not be able to help you obtain causal estimates if your TTE design is flawed. 
+Commonly used in TTE and causal inference are the g-methods and preferably in combination via targeted learning. Don’t worry which of these methods to use, just use targeted learning - this is the most optimal way of estimating your causal estimands. 
+
+This stuff can feel overwhelming and complicated, but rest assured that you only need an intuitive understanding of how these methods work. Great implementations have already been made in R readily available for you to use. 
+
+First get to understand inverse probability weighting and the g-formula. Then read about targeted learning and use that! 
+
+Introduction to g-methods: https://pmc.ncbi.nlm.nih.gov/articles/PMC6074945/ 
+
+Introduction to targeted learning / TMLE: https://www.khstats.com/blog/tmle/tutorial  
+
+Machine learning in causal inference for epidemiology: https://link.springer.com/article/10.1007/s10654-024-01173-x  
+
+If you would like assistance in utilizing targeted learning/TMLE for your study, please reach out to me (PBRZ) or other great colleagues in the Targeted Learning & Causal Inference Team, we are happy to help! 
+
+Polle package in R (developed in-house by OANO): https://cran.r-project.org/web/packages/polle/index.html  
+LTMLE package in R: https://cran.r-project.org/web/packages/ltmle/index.html  
+LMTP package in R: https://cran.r-project.org/web/packages/lmtp/index.html  
+
+And please don’t use the cox proportional hazards model: http://journals.lww.com/epidem/fulltext/2010/01000/the_hazards_of_hazard_ratios.4.aspx  
+
