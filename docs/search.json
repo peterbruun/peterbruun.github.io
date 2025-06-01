@@ -109,7 +109,7 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "Here I post on target trial emulation, causal inference, and targeted learning related topics.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTargeted Learning as an Alternative to Cloning Censoring Weighting\n\n\n\ncausal inference\n\nstudy design\n\ntargeted learning\n\n\n\nTutorial demonstrating how targeted learning can be used to prevent immortal time bias similarly to what is achieved with cloning-censoring weighting.\n\n\n\n\n\nMay 25, 2025\n\n\nPeter Bruun-Rasmussen\n\n\n\n\n\nNo matching items"
+    "text": "Here I post on target trial emulation, causal inference, and targeted learning related topics.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGetting Started Learning Target Trial Emulation\n\n\n\ntarget trial emulation\n\ncausal inference\n\nstudy design\n\ntargeted learning\n\n\n\nThis post serves as a one-pager suggestion as to how one can get started learning about target trial emulation.\n\n\n\n\n\nJun 1, 2025\n\n\nPeter Bruun-Rasmussen\n\n\n\n\n\n\n\n\n\n\n\n\nTargeted Learning as an Alternative to Cloning Censoring Weighting\n\n\n\ncausal inference\n\nstudy design\n\ntargeted learning\n\n\n\nTutorial demonstrating how targeted learning can be used to prevent immortal time bias similarly to what is achieved with cloning-censoring weighting.\n\n\n\n\n\nMay 25, 2025\n\n\nPeter Bruun-Rasmussen\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/2025/01-targeted_learning_vs_cloning_censoring_weighting/index.html",
@@ -215,5 +215,54 @@
     "title": "Targeted Learning as an Alternative to Cloning Censoring Weighting",
     "section": "Naive and (Immortal Time) Biased Analysis",
     "text": "Naive and (Immortal Time) Biased Analysis\n\nProbability of death for patients actually taking aspirin for 2 years\n9, 10, and 11 survived to the second year and are on aspirin at start of second year.\n\ndt1[Aspirin2 == \"Yes\"]\n\n   Person  durA Aspirin1  Dead1 Aspirin2  Dead2\n    &lt;num&gt; &lt;num&gt;   &lt;char&gt; &lt;char&gt;   &lt;char&gt; &lt;char&gt;\n1:      9     2      Yes     No      Yes     No\n2:     10     2      Yes     No      Yes    Yes\n3:     11     2      Yes     No      Yes    Yes\n\ndeaths_aspirin2 &lt;- 2/3\nround(deaths_aspirin2, 2)\n\n[1] 0.67\n\n\n\n\nProbability of death for patients not taking aspirin\nThe patients who did not receive aspirin in the data are 1, 2, 3, and 4.\n\ndt1[Aspirin1 == \"No\" & Aspirin2 %in% c(\"No\",\"-\")]\n\n   Person  durA Aspirin1  Dead1 Aspirin2  Dead2\n    &lt;num&gt; &lt;num&gt;   &lt;char&gt; &lt;char&gt;   &lt;char&gt; &lt;char&gt;\n1:      1     0       No     No       No     No\n2:      2     0       No     No       No    Yes\n3:      3     0       No     No       No    Yes\n4:      4     0       No    Yes        -    Yes\n\ndeaths_no_aspirin &lt;- 3/4\nround(deaths_no_aspirin,2)\n\n[1] 0.75\n\n\n\n\nNaive treatment effect of 2 years Aspirin vs no aspirin\n\nround(deaths_aspirin2 / deaths_no_aspirin, 2)\n\n[1] 0.89\n\n\nThe relative risk difference is less than 1 even though there is no effect.\nFrom the paper: “This is not surprising: the average survival is longer in people who received two years of treatment because they were alive for at least two years. By definition, people receiving treatment were “immortal” during those two years, which is why the bias of this naive analysis is referred to as immortal time bias.”"
+  },
+  {
+    "objectID": "posts/2025/02-learn_tte_two_pager/index.html",
+    "href": "posts/2025/02-learn_tte_two_pager/index.html",
+    "title": "Getting Started Learning Target Trial Emulation",
+    "section": "",
+    "text": "The core of target trial emulation (TTE) is the research question and to identify the study assumptions required to answer it. Here directed acyclic graphs (DAGs) are a key tool. This helps you identify confounding, and the adjustment sets required to obtain exchangeability (that is, emulate randomization).\nI suggest starting with the free course: Causal Diagrams: Draw You Assumptions Before Your Conclusions, by Miguel Hernan and Harvard."
+  },
+  {
+    "objectID": "posts/2025/02-learn_tte_two_pager/index.html#learn-causal-diagrams-directed-acyclic-graphs-dags",
+    "href": "posts/2025/02-learn_tte_two_pager/index.html#learn-causal-diagrams-directed-acyclic-graphs-dags",
+    "title": "Getting Started Learning Target Trial Emulation",
+    "section": "",
+    "text": "The core of target trial emulation (TTE) is the research question and to identify the study assumptions required to answer it. Here directed acyclic graphs (DAGs) are a key tool. This helps you identify confounding, and the adjustment sets required to obtain exchangeability (that is, emulate randomization).\nI suggest starting with the free course: Causal Diagrams: Draw You Assumptions Before Your Conclusions, by Miguel Hernan and Harvard."
+  },
+  {
+    "objectID": "posts/2025/02-learn_tte_two_pager/index.html#learn-to-use-dagitty",
+    "href": "posts/2025/02-learn_tte_two_pager/index.html#learn-to-use-dagitty",
+    "title": "Getting Started Learning Target Trial Emulation",
+    "section": "2. Learn to use DAGitty",
+    "text": "2. Learn to use DAGitty\nDrawing DAGs and identifying open backdoor paths (confounding) and colliders can be challenging. Luckily, free tools exist that can help you do this automatically. One such tool is DAGitty.\nThere are several DAGitty tutorials on youtube, one suggestion could be this one."
+  },
+  {
+    "objectID": "posts/2025/02-learn_tte_two_pager/index.html#read-the-what-if-book",
+    "href": "posts/2025/02-learn_tte_two_pager/index.html#read-the-what-if-book",
+    "title": "Getting Started Learning Target Trial Emulation",
+    "section": "3. Read the “What if” Book",
+    "text": "3. Read the “What if” Book\nCausal Inference: What if is written by Miguel Hernan and James Robins. It is a somewhat long read, but I really encourage you to take up the challenge! This book is a must read if you want to master the art of target trial emulation. Read one chapter for breakfast each morning and you will soon be a TTE master. The book is freely available here."
+  },
+  {
+    "objectID": "posts/2025/02-learn_tte_two_pager/index.html#read-principled",
+    "href": "posts/2025/02-learn_tte_two_pager/index.html#read-principled",
+    "title": "Getting Started Learning Target Trial Emulation",
+    "section": "4. Read PRINCIPLED",
+    "text": "4. Read PRINCIPLED\nThe good people behind the RCT-DUPLICATE initiative have made a great guide on how to use healthcare registry data and claims data to generate decision grade evidence using TTE. This is great to have in hand when designing your next study. Their paper can be found here: PRINCIPLED."
+  },
+  {
+    "objectID": "posts/2025/02-learn_tte_two_pager/index.html#trial-design",
+    "href": "posts/2025/02-learn_tte_two_pager/index.html#trial-design",
+    "title": "Getting Started Learning Target Trial Emulation",
+    "section": "5. Trial Design",
+    "text": "5. Trial Design\nActive comparator new user design (ACNU) or sequential nested trial design?\n\nIf a clear time-zero exists for both the treatment and comparator arm - use the ACNU. The ACNU design will help you reduce bias from confounding by indication (Yoshida, Solomon, and Kim (2015)).\nIf no clear time-zero exists for one of the arms - use the sequential nested trial design (Hernán et al. (2008), Hernán et al. (2016))."
+  },
+  {
+    "objectID": "posts/2025/02-learn_tte_two_pager/index.html#learn-the-statistical-methods-required",
+    "href": "posts/2025/02-learn_tte_two_pager/index.html#learn-the-statistical-methods-required",
+    "title": "Getting Started Learning Target Trial Emulation",
+    "section": "6. Learn the Statistical Methods Required",
+    "text": "6. Learn the Statistical Methods Required\nI cannot state enough that the statistical methods should be your last focus point. These methods will not be able to help you obtain causal estimates if your TTE design is flawed.\nCommonly used in TTE and causal inference are the g-methods and preferably in combination via targeted learning. Don’t worry which of these methods to use, just use targeted learning - this is the most unbiased method for estimating your causal estimands.\nThis stuff can feel overwhelming and complicated, but rest assured that you only need an intuitive understanding of how these methods work. Great implementations have already been made readily available in R for you to use.\nFirst get to understand inverse probability weighting and the g-formula. Then read about targeted learning and use that!\n\nIntroduction to g-methods\nIntroduction to targeted learning / TMLE\n“Machine Learning in Causal Inference for Epidemiology”: Paper\n\nSoftware in R:\n- polle package\n- lmtp package\n- ltmle package\nAnd please don’t use the cox proportional hazards model! (Hernán (2010))\nGood luck! - And feel free to reach out if you would like assistance, I would be happy to collaborate!"
   }
 ]

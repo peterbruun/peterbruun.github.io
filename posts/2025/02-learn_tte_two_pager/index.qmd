@@ -1,9 +1,9 @@
 ---
-title: "Getting started learning Target Trial Emulation (two-pager) "
-description: "This post serves as a suggestion as to how one can get started learning about target trial emulation (TTE). "
+title: "Getting Started Learning Target Trial Emulation"
+description: "This post serves as a one-pager suggestion as to how one can get started learning about target trial emulation."
 author: "Peter Bruun-Rasmussen"
 date: "06/01/2025"
-draft: True
+draft: False
 date-modified: last-modified
 bibliography: references.bib
 categories: 
@@ -14,58 +14,56 @@ categories:
 ---
 
 
-1. Learn causal diagrams / directed acyclic graphs 
+## 1. Learn Causal Diagrams / Directed Acyclic Graphs (DAGs)
 
-The core of TTE is the research question and the required study assumptions required to answer it. Here directed acyclic graphs are a key tool. This helps you identify confounding, and the adjustment sets required to obtain exchangeability (that is, emulate randomization). 
+The core of target trial emulation (TTE) is the research question and to identify the study assumptions required to answer it. 
+Here directed acyclic graphs (DAGs) are a key tool. This helps you identify confounding, and the adjustment sets required to obtain exchangeability (that is, emulate randomization). 
 
-I suggest starting with the free course: Causal Diagrams: Draw You Assumptions Before Your Conclusions, by Miguel Hernan and Harvard. https://pll.harvard.edu/course/causal-diagrams-draw-your-assumptions-your-conclusions  
+I suggest starting with the free course: [Causal Diagrams: Draw You Assumptions Before Your Conclusions](https://pll.harvard.edu/course/causal-diagrams-draw-your-assumptions-your-conclusions), by Miguel Hernan and Harvard.
 
-Learn to use DAGitty 
+## 2. Learn to use DAGitty 
 
-Drawing DAGs and identifying open backdoor paths (confounding) and colliders can be challenging. Luckily, tools exist that can help you do this automatically. One such tool is DAGitty. DAGitty is a free online-tool which can be found here: https://www.dagitty.net/dags.html#  
+Drawing DAGs and identifying open backdoor paths (confounding) and colliders can be challenging. Luckily, free tools exist that can help you do this automatically. 
+One such tool is [DAGitty](https://www.dagitty.net/dags.html#).
 
-There are several DAGitty tutorials on youtube, one suggestion could be this one: https://www.youtube.com/watch?v=3euqrnD9w7c  
+There are several DAGitty tutorials on youtube, one suggestion could be this [one](https://www.youtube.com/watch?v=3euqrnD9w7c).
 
-Read the “What if” book 
+## 3. Read the “What if” Book
 
-This is somewhat long read, but I really encourage you to take up the challenge. 
-This book is a must read if you want to master the art of TTE. Read one chapter for breakfast each morning and you will soon be a TTE master. 
-Free book: https://miguelhernan.org/whatifbook  
+[Causal Inference: What if](https://miguelhernan.org/whatifbook) is written by Miguel Hernan and James Robins.
+It is a somewhat long read, but I really encourage you to take up the challenge! 
+This book is a must read if you want to master the art of target trial emulation. Read one chapter for breakfast each morning and you will soon be a TTE master. 
+The book is freely available [here](https://miguelhernan.org/whatifbook).
 
-Read PRINCIPLED 
+## 4. Read PRINCIPLED 
 
-The people behind the RCT-DUPLICATE initiative have made a great guide on how to use healthcare registry data and claims data (what we have available) to generate decision grade evidence using TTE. Their paper can be found here: https://www.bmj.com/content/384/bmj-2023-076460  
+The good people behind the RCT-DUPLICATE initiative have made a great guide on how to use healthcare registry data and claims data to generate decision grade evidence using TTE. This is great to have in hand when designing your next study. Their paper can be found here: [PRINCIPLED](https://www.bmj.com/content/384/bmj-2023-076460).
 
- 
+## 5. Trial Design 
 
-Trial Design 
+**Active comparator new user design (ACNU) or sequential nested trial design?**
 
-Active comparator new user design (ACNU), or sequential nested trial design? 
+- If a clear time-zero exists for both the treatment and comparator arm - use the ACNU. The ACNU design will help you reduce bias from confounding by indication (@yoshida2015active).
+- If no clear time-zero exists for one of the arms - use the sequential nested trial design (@hernan2008observational, @hernan2016specifying).
 
-If a clear time-zero is available for both the treatment and comparator arm - use the ACNU: https://pmc.ncbi.nlm.nih.gov/articles/PMC4486631/ 
-If no clear time-zero exists for one of the arms - use sequential nested trial design. 
-https://www.sciencedirect.com/science/article/pii/S0895435616301366?via%3Dihub 
+## 6. Learn the Statistical Methods Required 
 
-Learn the statistical methods required 
+I cannot state enough that the statistical methods should be your last focus point. These methods will not be able to help you obtain causal estimates if your TTE design is flawed.  
+Commonly used in TTE and causal inference are the g-methods and preferably in combination via targeted learning. Don’t worry which of these methods to use, just use **targeted learning** - this is the most unbiased method for estimating your causal estimands. 
 
-I cannot state enough that the methods should be your last focus point. These methods will not be able to help you obtain causal estimates if your TTE design is flawed. 
-Commonly used in TTE and causal inference are the g-methods and preferably in combination via targeted learning. Don’t worry which of these methods to use, just use targeted learning - this is the most optimal way of estimating your causal estimands. 
+This stuff can feel overwhelming and complicated, but rest assured that you only need an intuitive understanding of how these methods work. Great implementations have already been made readily available in R for you to use. 
 
-This stuff can feel overwhelming and complicated, but rest assured that you only need an intuitive understanding of how these methods work. Great implementations have already been made in R readily available for you to use. 
+First get to understand inverse probability weighting and the g-formula. Then read about **targeted learning** and use that! 
 
-First get to understand inverse probability weighting and the g-formula. Then read about targeted learning and use that! 
+- Introduction to [g-methods](https://pmc.ncbi.nlm.nih.gov/articles/PMC6074945/)
+- Introduction to [targeted learning / TMLE](https://www.khstats.com/blog/tmle/tutorial)
+- "Machine Learning in Causal Inference for Epidemiology": [Paper](https://link.springer.com/article/10.1007/s10654-024-01173-x)
 
-Introduction to g-methods: https://pmc.ncbi.nlm.nih.gov/articles/PMC6074945/ 
+**Software in R:**   
+- [polle](https://cran.r-project.org/web/packages/polle/index.html) package  
+- [lmtp](https://cran.r-project.org/web/packages/lmtp/index.html) package  
+- [ltmle](https://cran.r-project.org/web/packages/ltmle/index.html) package
 
-Introduction to targeted learning / TMLE: https://www.khstats.com/blog/tmle/tutorial  
+And please [don’t use](http://journals.lww.com/epidem/fulltext/2010/01000/the_hazards_of_hazard_ratios.4.aspx) the cox proportional hazards model! (@hernan2010hazards)
 
-Machine learning in causal inference for epidemiology: https://link.springer.com/article/10.1007/s10654-024-01173-x  
-
-If you would like assistance in utilizing targeted learning/TMLE for your study, please reach out to me (PBRZ) or other great colleagues in the Targeted Learning & Causal Inference Team, we are happy to help! 
-
-Polle package in R (developed in-house by OANO): https://cran.r-project.org/web/packages/polle/index.html  
-LTMLE package in R: https://cran.r-project.org/web/packages/ltmle/index.html  
-LMTP package in R: https://cran.r-project.org/web/packages/lmtp/index.html  
-
-And please don’t use the cox proportional hazards model: http://journals.lww.com/epidem/fulltext/2010/01000/the_hazards_of_hazard_ratios.4.aspx  
-
+**Good luck!** - And feel free to reach out if you would like assistance, I would be happy to [collaborate](https://dk.linkedin.com/in/peter-bruun-rasmussen)!
